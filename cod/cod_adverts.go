@@ -11,25 +11,25 @@ import (
 	"time"
 )
 
-type Advert struct {
+type Adverts struct {
 	input    string
 	Interval int
 	requests chan rcon.RCONQuery
 }
 
-func NewAdvert(input string, interval int, requests chan rcon.RCONQuery) *Advert {
-	a := new(Advert)
+func NewAdverts(input string, interval int, requests chan rcon.RCONQuery) *Adverts {
+	a := new(Adverts)
 	a.input = input
 	a.requests = requests
 	a.Interval = interval
 	return a
 }
 
-func (a *Advert) Setup() error {
+func (a *Adverts) Setup() error {
 	return nil
 }
 
-func (a *Advert) Start() {
+func (a *Adverts) Start() {
 	ads, err := read(a.input)
 	if err != nil {
 		log.Fatal("Failed to load adverts from file ", a.input, ": ", err)
