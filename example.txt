@@ -1,0 +1,6 @@
+Use this file to send rotating messages to the server.
+This line will be send directly after the one above.
+
+This line, however, will be sent after a delay.
+
+This one too.
