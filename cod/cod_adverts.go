@@ -14,14 +14,20 @@ import (
 type Adverts struct {
 	input    string
 	Interval int
+	cfg      Config
 	requests chan rcon.RCONQuery
 }
 
-func NewAdverts(input string, interval int, requests chan rcon.RCONQuery) *Adverts {
+type Config struct {
+	Prefix   string
+	Input    string
+	Interval int
+}
+
+func NewAdverts(cfg Config, requests chan rcon.RCONQuery) *Adverts {
 	a := new(Adverts)
-	a.input = input
+	a.cfg = cfg
 	a.requests = requests
-	a.Interval = interval
 	return a
 }
 
@@ -30,9 +36,9 @@ func (a *Adverts) Setup() error {
 }
 
 func (a *Adverts) Start() {
-	ads, err := read(a.input)
+	ads, err := read(a.cfg.Input)
 	if err != nil {
-		log.Fatal("Failed to load adverts from file ", a.input, ": ", err)
+		log.Fatal("Failed to load adverts from file ", a.cfg.Input, ": ", err)
 	}
 
 	for {
@@ -40,9 +46,9 @@ func (a *Adverts) Start() {
 			if ad != "" {
 				// TODO missing say prefix
 				log.Println("adverts: sending", ad, "to RCON")
-				a.requests <- rcon.RCONQuery{Command: fmt.Sprint("say \"", ad, "\""), Response: nil}
+				a.requests <- rcon.RCONQuery{Command: fmt.Sprint("say \"", a.cfg.Prefix, ad, "\""), Response: nil}
 			} else {
-				time.Sleep(time.Duration(a.Interval) * time.Millisecond)
+				time.Sleep(time.Duration(a.cfg.Interval) * time.Millisecond)
 			}
 		}
 	}
