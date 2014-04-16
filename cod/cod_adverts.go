@@ -5,7 +5,7 @@ package cod
 import (
 	"bufio"
 	"fmt"
-	"github.com/adabei/goldenbot/rcon"
+	"github.com/schwarz/goldenbot/rcon"
 	"log"
 	"os"
 	"time"
